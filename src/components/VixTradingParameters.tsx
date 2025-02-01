@@ -83,19 +83,27 @@ const VixTradingParameters = () => {
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     
-    // Allow empty string or valid number input
-    if (value === '' || value === '-' || value === '.') {
+    // Allow empty string, single decimal point, or valid number input
+    if (value === '' || value === '.') {
       setParameters(prev => ({ ...prev, [name]: value }));
       return;
     }
 
-    // Parse the number, allowing decimals and negative values
-    const numValue = parseFloat(value);
-    if (isNaN(numValue)) return;
+    // Regular expression to validate decimal number format
+    const decimalRegex = /^\d*\.?\d*$/;
+    if (!decimalRegex.test(value)) {
+      return;
+    }
 
+    // Convert to number if it's a valid decimal
+    const numValue = parseFloat(value);
+    
     setParameters(prev => {
-      const newParams = { ...prev, [name]: numValue };
-      const validationResult = validationService.validateParameterConstraints(newParams);
+      const newParams = { ...prev, [name]: value };
+      const validationResult = validationService.validateParameterConstraints({
+        ...newParams,
+        [name]: numValue // Use the parsed number for validation
+      });
       
       if (!validationResult.isValid) {
         addValidationMessage({
@@ -107,7 +115,7 @@ const VixTradingParameters = () => {
 
       addValidationMessage({
         type: 'success',
-        message: `Updated ${name} to ${numValue}`
+        message: `Updated ${name} to ${value}`
       });
       return newParams;
     });
@@ -115,6 +123,19 @@ const VixTradingParameters = () => {
 
   const handleTestInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
+    
+    // Allow empty string, single decimal point, or valid number input
+    if (value === '' || value === '.') {
+      setTestValues(prev => ({ ...prev, [name]: value }));
+      return;
+    }
+
+    // Regular expression to validate decimal number format
+    const decimalRegex = /^\d*\.?\d*$/;
+    if (!decimalRegex.test(value)) {
+      return;
+    }
+
     const numValue = parseFloat(value);
     if (!isNaN(numValue)) {
       setTestValues(prev => ({ ...prev, [name]: numValue }));
