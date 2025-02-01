@@ -82,17 +82,26 @@ const VixTradingParameters = () => {
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    let numValue: number;
     
-    // Handle empty or decimal-only input
-    if (value === '' || value === '.') {
-      numValue = 0;
-    } else {
-      // Remove leading zeros unless it's a decimal less than 1
-      const cleanedValue = value.replace(/^0+(?=\d)/, '');
-      numValue = parseFloat(cleanedValue);
-      if (isNaN(numValue)) numValue = 0;
+    // Allow empty values
+    if (value === '') {
+      setParameters(prev => ({ ...prev, [name]: '' }));
+      return;
     }
+
+    // Handle decimal input
+    if (value === '.') {
+      setParameters(prev => ({ ...prev, [name]: '0.' }));
+      return;
+    }
+
+    // Remove leading zeros unless it's a decimal less than 1
+    const cleanedValue = value.startsWith('0') && !value.startsWith('0.') 
+      ? value.replace(/^0+/, '')
+      : value;
+
+    const numValue = parseFloat(cleanedValue);
+    if (isNaN(numValue)) return;
     
     setParameters(prev => {
       const newParams = { ...prev, [name]: numValue };
@@ -180,7 +189,7 @@ const VixTradingParameters = () => {
             <input
               type="number"
               name="minVixPrice"
-              value={parameters.minVixPrice || ''}
+              value={parameters.minVixPrice}
               onChange={handleInputChange}
               disabled={!parameters.useVixPrice}
               step="any"
@@ -199,7 +208,7 @@ const VixTradingParameters = () => {
             <input
               type="number"
               name="maxVixPrice"
-              value={parameters.maxVixPrice || ''}
+              value={parameters.maxVixPrice}
               onChange={handleInputChange}
               disabled={!parameters.useVixPrice}
               step="any"
@@ -215,7 +224,7 @@ const VixTradingParameters = () => {
               <input
                 type="number"
                 name="minVixOvernightGapUp"
-                value={parameters.minVixOvernightGapUp || ''}
+                value={parameters.minVixOvernightGapUp}
                 onChange={handleInputChange}
                 disabled={!parameters.useVixGaps}
                 step="any"
@@ -232,7 +241,7 @@ const VixTradingParameters = () => {
               <input
                 type="number"
                 name="maxVixOvernightGapUp"
-                value={parameters.maxVixOvernightGapUp || ''}
+                value={parameters.maxVixOvernightGapUp}
                 onChange={handleInputChange}
                 disabled={!parameters.useVixGaps}
                 step="any"
@@ -252,7 +261,7 @@ const VixTradingParameters = () => {
               <input
                 type="number"
                 name="minVixOvernightGapDown"
-                value={parameters.minVixOvernightGapDown || ''}
+                value={parameters.minVixOvernightGapDown}
                 onChange={handleInputChange}
                 disabled={!parameters.useVixGaps}
                 step="any"
@@ -269,7 +278,7 @@ const VixTradingParameters = () => {
               <input
                 type="number"
                 name="maxVixOvernightGapDown"
-                value={parameters.maxVixOvernightGapDown || ''}
+                value={parameters.maxVixOvernightGapDown}
                 onChange={handleInputChange}
                 disabled={!parameters.useVixGaps}
                 step="any"
