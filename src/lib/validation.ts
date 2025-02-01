@@ -85,12 +85,6 @@ export class VixValidationService {
           reason: 'Minimum VIX price cannot be negative' 
         };
       }
-      if (parameters.maxVixPrice < 10) {
-        return { 
-          isValid: false, 
-          reason: 'Maximum VIX price must be at least 10' 
-        };
-      }
       if (parameters.minVixPrice >= parameters.maxVixPrice) {
         return { 
           isValid: false, 
