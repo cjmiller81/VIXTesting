@@ -83,26 +83,16 @@ const VixTradingParameters = () => {
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     
-    // Allow empty values
-    if (value === '') {
-      setParameters(prev => ({ ...prev, [name]: '' }));
+    // Allow empty string or valid number input
+    if (value === '' || value === '-' || value === '.') {
+      setParameters(prev => ({ ...prev, [name]: value }));
       return;
     }
 
-    // Handle decimal input
-    if (value === '.') {
-      setParameters(prev => ({ ...prev, [name]: '0.' }));
-      return;
-    }
-
-    // Remove leading zeros unless it's a decimal less than 1
-    const cleanedValue = value.startsWith('0') && !value.startsWith('0.') 
-      ? value.replace(/^0+/, '')
-      : value;
-
-    const numValue = parseFloat(cleanedValue);
+    // Parse the number, allowing decimals and negative values
+    const numValue = parseFloat(value);
     if (isNaN(numValue)) return;
-    
+
     setParameters(prev => {
       const newParams = { ...prev, [name]: numValue };
       const validationResult = validationService.validateParameterConstraints(newParams);
@@ -126,7 +116,9 @@ const VixTradingParameters = () => {
   const handleTestInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     const numValue = parseFloat(value);
-    setTestValues(prev => ({ ...prev, [name]: numValue }));
+    if (!isNaN(numValue)) {
+      setTestValues(prev => ({ ...prev, [name]: numValue }));
+    }
   };
 
   const handleVixPriceToggle = (checked: boolean) => {
@@ -187,12 +179,11 @@ const VixTradingParameters = () => {
           <div className="space-y-2">
             <label className="text-white text-sm">Min VIX</label>
             <input
-              type="number"
+              type="text"
               name="minVixPrice"
               value={parameters.minVixPrice}
               onChange={handleInputChange}
               disabled={!parameters.useVixPrice}
-              step="any"
               className="w-full p-2 rounded bg-gray-800 text-white border border-gray-700 focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
             />
             <div className="flex items-center gap-2 mt-4">
@@ -206,12 +197,11 @@ const VixTradingParameters = () => {
           <div className="space-y-2">
             <label className="text-white text-sm">Max VIX</label>
             <input
-              type="number"
+              type="text"
               name="maxVixPrice"
               value={parameters.maxVixPrice}
               onChange={handleInputChange}
               disabled={!parameters.useVixPrice}
-              step="any"
               className="w-full p-2 rounded bg-gray-800 text-white border border-gray-700 focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
             />
           </div>
@@ -222,12 +212,11 @@ const VixTradingParameters = () => {
             <label className="text-white text-sm">Min VIX Overnight Gap Up %</label>
             <div className="relative">
               <input
-                type="number"
+                type="text"
                 name="minVixOvernightGapUp"
                 value={parameters.minVixOvernightGapUp}
                 onChange={handleInputChange}
                 disabled={!parameters.useVixGaps}
-                step="any"
                 className="w-full p-2 pr-8 rounded bg-gray-800 text-white border border-gray-700 focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
               />
               <div className="absolute right-2 top-1/2 -translate-y-1/2">
@@ -239,12 +228,11 @@ const VixTradingParameters = () => {
             <label className="text-white text-sm">Max VIX Overnight Gap Up %</label>
             <div className="relative">
               <input
-                type="number"
+                type="text"
                 name="maxVixOvernightGapUp"
                 value={parameters.maxVixOvernightGapUp}
                 onChange={handleInputChange}
                 disabled={!parameters.useVixGaps}
-                step="any"
                 className="w-full p-2 pr-8 rounded bg-gray-800 text-white border border-gray-700 focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
               />
               <div className="absolute right-2 top-1/2 -translate-y-1/2">
@@ -259,12 +247,11 @@ const VixTradingParameters = () => {
             <label className="text-white text-sm">Min VIX Overnight Gap Down %</label>
             <div className="relative">
               <input
-                type="number"
+                type="text"
                 name="minVixOvernightGapDown"
                 value={parameters.minVixOvernightGapDown}
                 onChange={handleInputChange}
                 disabled={!parameters.useVixGaps}
-                step="any"
                 className="w-full p-2 pr-8 rounded bg-gray-800 text-white border border-gray-700 focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
               />
               <div className="absolute right-2 top-1/2 -translate-y-1/2">
@@ -276,12 +263,11 @@ const VixTradingParameters = () => {
             <label className="text-white text-sm">Max VIX Overnight Gap Down %</label>
             <div className="relative">
               <input
-                type="number"
+                type="text"
                 name="maxVixOvernightGapDown"
                 value={parameters.maxVixOvernightGapDown}
                 onChange={handleInputChange}
                 disabled={!parameters.useVixGaps}
-                step="any"
                 className="w-full p-2 pr-8 rounded bg-gray-800 text-white border border-gray-700 focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
               />
               <div className="absolute right-2 top-1/2 -translate-y-1/2">
@@ -317,33 +303,30 @@ const VixTradingParameters = () => {
           <div className="space-y-2">
             <label className="text-white text-sm">VIX Open</label>
             <input
-              type="number"
+              type="text"
               name="vixOpen"
               value={testValues.vixOpen}
               onChange={handleTestInputChange}
-              step="any"
               className="w-full p-2 rounded bg-gray-800 text-white border border-gray-700 focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
             />
           </div>
           <div className="space-y-2">
             <label className="text-white text-sm">VIX Prior Close</label>
             <input
-              type="number"
+              type="text"
               name="vixPreviousClose"
               value={testValues.vixPreviousClose}
               onChange={handleTestInputChange}
-              step="any"
               className="w-full p-2 rounded bg-gray-800 text-white border border-gray-700 focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
             />
           </div>
           <div className="space-y-2">
             <label className="text-white text-sm">Current VIX Price</label>
             <input
-              type="number"
+              type="text"
               name="currentVixPrice"
               value={testValues.currentVixPrice}
               onChange={handleTestInputChange}
-              step="any"
               className="w-full p-2 rounded bg-gray-800 text-white border border-gray-700 focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
             />
           </div>
