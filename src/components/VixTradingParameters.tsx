@@ -82,7 +82,7 @@ const VixTradingParameters = () => {
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    const numValue = parseFloat(value);
+    const numValue = parseFloat(value) || 0; // Default to 0 if parsing fails
     
     setParameters(prev => {
       const newParams = { ...prev, [name]: numValue };
