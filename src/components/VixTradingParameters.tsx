@@ -183,7 +183,6 @@ const VixTradingParameters = () => {
               value={parameters.minVixPrice || ''}
               onChange={handleInputChange}
               disabled={!parameters.useVixPrice}
-              min="0"
               step="any"
               className="w-full p-2 rounded bg-gray-800 text-white border border-gray-700 focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
             />
@@ -203,7 +202,6 @@ const VixTradingParameters = () => {
               value={parameters.maxVixPrice || ''}
               onChange={handleInputChange}
               disabled={!parameters.useVixPrice}
-              min="10"
               step="any"
               className="w-full p-2 rounded bg-gray-800 text-white border border-gray-700 focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
             />
@@ -220,7 +218,6 @@ const VixTradingParameters = () => {
                 value={parameters.minVixOvernightGapUp || ''}
                 onChange={handleInputChange}
                 disabled={!parameters.useVixGaps}
-                min="0"
                 step="any"
                 className="w-full p-2 pr-8 rounded bg-gray-800 text-white border border-gray-700 focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
               />
@@ -238,7 +235,6 @@ const VixTradingParameters = () => {
                 value={parameters.maxVixOvernightGapUp || ''}
                 onChange={handleInputChange}
                 disabled={!parameters.useVixGaps}
-                min="0"
                 step="any"
                 className="w-full p-2 pr-8 rounded bg-gray-800 text-white border border-gray-700 focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
               />
@@ -259,7 +255,6 @@ const VixTradingParameters = () => {
                 value={parameters.minVixOvernightGapDown || ''}
                 onChange={handleInputChange}
                 disabled={!parameters.useVixGaps}
-                min="0"
                 step="any"
                 className="w-full p-2 pr-8 rounded bg-gray-800 text-white border border-gray-700 focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
               />
@@ -277,7 +272,6 @@ const VixTradingParameters = () => {
                 value={parameters.maxVixOvernightGapDown || ''}
                 onChange={handleInputChange}
                 disabled={!parameters.useVixGaps}
-                min="0"
                 step="any"
                 className="w-full p-2 pr-8 rounded bg-gray-800 text-white border border-gray-700 focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
               />
@@ -318,7 +312,7 @@ const VixTradingParameters = () => {
               name="vixOpen"
               value={testValues.vixOpen}
               onChange={handleTestInputChange}
-              step="0.01"
+              step="any"
               className="w-full p-2 rounded bg-gray-800 text-white border border-gray-700 focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
             />
           </div>
@@ -329,7 +323,7 @@ const VixTradingParameters = () => {
               name="vixPreviousClose"
               value={testValues.vixPreviousClose}
               onChange={handleTestInputChange}
-              step="0.01"
+              step="any"
               className="w-full p-2 rounded bg-gray-800 text-white border border-gray-700 focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
             />
           </div>
@@ -340,7 +334,7 @@ const VixTradingParameters = () => {
               name="currentVixPrice"
               value={testValues.currentVixPrice}
               onChange={handleTestInputChange}
-              step="0.01"
+              step="any"
               className="w-full p-2 rounded bg-gray-800 text-white border border-gray-700 focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
             />
           </div>
