@@ -82,7 +82,17 @@ const VixTradingParameters = () => {
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    const numValue = parseFloat(value) || 0; // Default to 0 if parsing fails
+    let numValue: number;
+    
+    // Handle empty or decimal-only input
+    if (value === '' || value === '.') {
+      numValue = 0;
+    } else {
+      // Remove leading zeros unless it's a decimal less than 1
+      const cleanedValue = value.replace(/^0+(?=\d)/, '');
+      numValue = parseFloat(cleanedValue);
+      if (isNaN(numValue)) numValue = 0;
+    }
     
     setParameters(prev => {
       const newParams = { ...prev, [name]: numValue };
@@ -170,11 +180,11 @@ const VixTradingParameters = () => {
             <input
               type="number"
               name="minVixPrice"
-              value={parameters.minVixPrice}
+              value={parameters.minVixPrice || ''}
               onChange={handleInputChange}
               disabled={!parameters.useVixPrice}
               min="0"
-              step="0.01"
+              step="any"
               className="w-full p-2 rounded bg-gray-800 text-white border border-gray-700 focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
             />
             <div className="flex items-center gap-2 mt-4">
@@ -190,11 +200,11 @@ const VixTradingParameters = () => {
             <input
               type="number"
               name="maxVixPrice"
-              value={parameters.maxVixPrice}
+              value={parameters.maxVixPrice || ''}
               onChange={handleInputChange}
               disabled={!parameters.useVixPrice}
               min="10"
-              step="0.01"
+              step="any"
               className="w-full p-2 rounded bg-gray-800 text-white border border-gray-700 focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
             />
           </div>
@@ -207,11 +217,11 @@ const VixTradingParameters = () => {
               <input
                 type="number"
                 name="minVixOvernightGapUp"
-                value={parameters.minVixOvernightGapUp}
+                value={parameters.minVixOvernightGapUp || ''}
                 onChange={handleInputChange}
                 disabled={!parameters.useVixGaps}
                 min="0"
-                step="0.01"
+                step="any"
                 className="w-full p-2 pr-8 rounded bg-gray-800 text-white border border-gray-700 focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
               />
               <div className="absolute right-2 top-1/2 -translate-y-1/2">
@@ -225,11 +235,11 @@ const VixTradingParameters = () => {
               <input
                 type="number"
                 name="maxVixOvernightGapUp"
-                value={parameters.maxVixOvernightGapUp}
+                value={parameters.maxVixOvernightGapUp || ''}
                 onChange={handleInputChange}
                 disabled={!parameters.useVixGaps}
                 min="0"
-                step="0.01"
+                step="any"
                 className="w-full p-2 pr-8 rounded bg-gray-800 text-white border border-gray-700 focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
               />
               <div className="absolute right-2 top-1/2 -translate-y-1/2">
@@ -246,11 +256,11 @@ const VixTradingParameters = () => {
               <input
                 type="number"
                 name="minVixOvernightGapDown"
-                value={parameters.minVixOvernightGapDown}
+                value={parameters.minVixOvernightGapDown || ''}
                 onChange={handleInputChange}
                 disabled={!parameters.useVixGaps}
                 min="0"
-                step="0.01"
+                step="any"
                 className="w-full p-2 pr-8 rounded bg-gray-800 text-white border border-gray-700 focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
               />
               <div className="absolute right-2 top-1/2 -translate-y-1/2">
@@ -264,11 +274,11 @@ const VixTradingParameters = () => {
               <input
                 type="number"
                 name="maxVixOvernightGapDown"
-                value={parameters.maxVixOvernightGapDown}
+                value={parameters.maxVixOvernightGapDown || ''}
                 onChange={handleInputChange}
                 disabled={!parameters.useVixGaps}
                 min="0"
-                step="0.01"
+                step="any"
                 className="w-full p-2 pr-8 rounded bg-gray-800 text-white border border-gray-700 focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
               />
               <div className="absolute right-2 top-1/2 -translate-y-1/2">
